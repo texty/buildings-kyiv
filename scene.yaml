@@ -1,0 +1,123 @@
+
+sources:
+    osm:
+        type: TopoJSON
+        url:  //vector.mapzen.com/osm/all/{z}/{x}/{y}.topojson?api_key=vector-tiles-HqUVidw
+    overlay:
+        type: GeoJSON
+        url: buildings.geojson
+
+
+cameras:
+    camera1:
+        type: perspective
+
+#original lights
+lights:
+    light1:
+        type: directional
+        direction: [2, 1, -.9]
+        diffuse: .4
+        ambient: 1.4
+
+styles:
+    flatlines:
+        base: lines
+        lighting: false # ignore lights
+    flatpolys:
+        base: polygons
+        lighting: false # ignore lights
+
+scene:
+    background:
+        color: [.4, .4, .4]
+
+layers:
+    earth:
+        data: { source: osm, layer: earth }
+        draw:
+            flatpolys:
+                order: function() { return feature.sort_key; }
+                color: '#E5E5E5'
+
+    landuse:
+        data: { source: osm, layer: landuse }
+        parks:
+            filter: { kind: [park, cemetery, graveyard, forest] }
+            draw:
+                flatpolys:
+                    order: function() { return feature.sort_key; }
+                    color: lightgrey
+
+    water:
+        data: { source: osm, layer: water }
+        draw:
+            flatpolys:
+                order: function() { return feature.sort_key; }
+                color:  '#C3DDE6'
+
+    roads:
+        data: { source: osm }
+        properties: { width: 5 }
+        draw:
+            lines:
+                order:  300
+                color: [1, 1, 1]
+                width: 3
+
+        # default outlines starting at zoom 16
+        default-outline-width:
+            filter: { $zoom: { min: 16 } } #16
+            draw:
+                flatlines:
+                    outline:
+                        order: 352
+                        width: function () { return 3/16 * Math.log($zoom); }
+
+
+
+        z-order:
+            filter: { $zoom: {min: 14} } #original : 14
+            draw:
+                flatlines:
+                    # let roads sort themselves past zoom 14
+                    order: function() { return feature.sort_key; }
+                    # but give them all the same outline
+                    outline:
+                        order: 352 # magic number 352
+
+# all buildings from OSM
+    buildings:
+        data:
+            source: osm
+            layer: buildings
+        draw:
+            polygons:
+                order: 480
+                # color taller buildings brighter
+                color: rgba(150, 150, 150, 0.5)
+
+                extrude: 20 #height of all buildings
+
+    my-buildings:
+        data: { source: overlay, layer: buildings }
+        filter:
+            abandoned_building: yes #building: "yes"
+        draw:
+            polygons:
+                order: 500
+                color: '#800D0F'
+                extrude: function () {return feature.height + 50}
+                interactive: true
+
+    construction:
+        data: { source: overlay, layer: buildings}
+        filter:
+            [ abandoned_building: construction,
+            abandoned_landuse: construction ]
+        draw:
+            polygons:
+                order: 500000
+                color: '#0000FF'
+                extrude: function () {return feature.height + 20}
+                interactive: true
