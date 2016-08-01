@@ -7,7 +7,7 @@ map = (function () {
 //    function onTangramClick(selection) { console.log('Hover!', selection); };
 
     // var map_start_location = [50.4696, 30.5206, 11.975]; // Kyiv last
-    var map_start_location = [50.4625, 30.5222, 14.57854]; // Kyiv
+    var map_start_location = [50.4667, 30.5243, 15.3]; // Kyiv
 
 
     /*** URL parsing ***/
