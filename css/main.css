@@ -178,7 +178,7 @@ h3 span {
 }
 
 #article p {
-  opacity: .3
+  opacity: 1;
 }
 
 #article p.graph-scroll-active{
