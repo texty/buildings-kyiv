@@ -408,7 +408,7 @@ sources:
         #url: '//vector.dev.mapzen.com/osm/all/{z}/{x}/{y}.topojson'
         #url:  //localhost:8080/osm/all/{z}/{x}/{y}.json
         max_zoom: 16
-        scripts: ["http://texty.org.ua/d/buildings-kyiv/js/buildings_ids_hash.js"]
+        scripts: ["https://oksymets.github.io/buildings-kyiv/js/buildings_ids_hash.js"]
         transform: |
           function(data) {
             data.buildings.features = data.buildings.features.filter(function(f){
