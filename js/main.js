@@ -1,7 +1,7 @@
 /*jslint browser: true*/
 /*global Tangram, gui */
 
-map = (function () {
+var map = (function () {
     'use strict';
 
     var map_start_location = [50.4667, 30.5243, 15.3]; // Kyiv
@@ -30,44 +30,36 @@ map = (function () {
         scene: 'scene.yaml',
         attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
         events: {
-          click: function(selection) {
-              window.selection = selection;
+            click: function(selection) {
+                console.log(selection);
+                if (!selection.feature) return;
 
-              console.log('Click!', selection);
-              if (!selection.feature) return;
-              var latlng = selection.leaflet_event.latlng;
+                var latlng = selection.leaflet_event.latlng;
 
-              var content = "";
+                var content = "";
 
-              if (selection.feature.properties['addr:street'])
+                if (selection.feature.properties['addr:street'])
                   content += '<b>' + selection.feature.properties['addr:street'] + '</b>';
 
-              if (selection.feature.properties['addr:housenumber'])
+                if (selection.feature.properties['addr:housenumber'])
                   content +=  ', <b>' + selection.feature.properties['addr:housenumber'] + '</b>' + '</br></br>';
 
-              if (selection.feature.properties.note)
+                if (selection.feature.properties.note)
                   content += selection.feature.properties.note + '</br></br>';
 
-              if (selection.feature.properties.description)
+                if (selection.feature.properties.description)
                   content += selection.feature.properties.description;
 
-              content = content.replace(/<\/br><\/br>$/, '');
+                content = content.replace(/<\/br><\/br>$/, '');
 
-
-
-              var popup = L.popup().setLatLng(latlng)
+                L.popup().setLatLng(latlng)
                 .setContent(content)
                 .openOn(map);
-
-
-
-          } // interactivity
-   }
+                } // interactivity
+        }
     });
 
     window.layer = layer;
-    var scene = layer.scene;
-    window.scene = scene;
 
     // setView expects format ([lat, long], zoom)
     map.setView(map_start_location.slice(0, 3), map_start_location[2]);
@@ -87,11 +79,28 @@ map = (function () {
             .sections(d3.selectAll('#article p'))
             .on('active', function(i) {
                 var section = d3.select('.graph-scroll-active');
-                var lon = section.attr('data-lon');
-                var lat = section.attr('data-lat');
-                if (!lon || !lat) return;
 
-                map.panTo(new L.LatLng(lat, lon));
+                // var click_coords = section.attr('data-click');
+                // if (!click_coords) return;
+                //
+                // // debugger;
+                // var pixel_coords = map.latLngToContainerPoint(click_coords.split("/"));
+                // console.log(pixel_coords);
+                // var el = document.getElementById('map');
+                // el.dispatchEvent(new MouseEvent('click', {
+                //     view: window,
+                //     bubbles: true,
+                //     cancelable: true,
+                //     screenX: pixel_coords.x,
+                //     screenY: pixel_coords.y
+                // }));
+
+                var coords = section.attr('data-coords');
+                if (!coords) return;
+
+                var c = coords.split("/");
+
+                map.setView(new L.LatLng(c[0], c[1]), 17, {animate: true, duration: 1});
             });
     });
 

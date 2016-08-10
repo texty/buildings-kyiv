@@ -59,7 +59,8 @@ h3 {
 }
 
 h3 span {
-  padding: 3px 5px;
+  padding: 3px 0;
+  line-height: 1.6;
   background: rgba(247, 122, 82, 0.5);
 }
 

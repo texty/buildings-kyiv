@@ -48,17 +48,17 @@ labels-global:
     - &label_visible_station          false
     - &icon_visible_station           false
     - &text_visible_station           false
-    - &text_visible_highway           false
-    - &text_visible_highway_e         false
-    - &text_visible_trunk_primary     false
-    - &text_visible_trunk_primary_e2  false
-    - &text_visible_trunk_primary_e   false
-    - &text_visible_secondary         false
-    - &text_visible_secondary_e       false
-    - &text_visible_tertiary          false
-    - &text_visible_tertiary_e        false
-    - &text_visible_minor_road        false
-    - &text_visible_minor_road_e      false
+    - &text_visible_highway           true
+    - &text_visible_highway_e         true
+    - &text_visible_trunk_primary     true
+    - &text_visible_trunk_primary_e2  true
+    - &text_visible_trunk_primary_e   true
+    - &text_visible_secondary         true
+    - &text_visible_secondary_e       true
+    - &text_visible_tertiary          true
+    - &text_visible_tertiary_e        true
+    - &text_visible_minor_road        true
+    - &text_visible_minor_road_e      true
     - &text_visible_service_road      false
     - &text_visible_path              false
     - &text_visible_piste             false
@@ -207,7 +207,7 @@ zinc-light-gray-colors:
         - &grey8_v     true                # winter sports visibility
         - &grey9       [.5, .5, .5]        # transit platform
         - &grey9_o     [.55, .55, .55]        # transit platform outline
-        - &grey9_v     true                # transit platform visibility
+        - &grey9_v     false                # transit platform visibility
         - &grey10      [.85, .85, .85]     # generic major landuse (theme park, resort, aquarium, winery)
         - &grey10_o    [.85, .85, .85]     # generic major landuse outline
         - &grey11      [.85, .85, .85]     # generic minor landuse (attraction, artwork)
@@ -478,12 +478,10 @@ lights:
 styles:
     buildings:
         base: polygons
-#        shaders:
-#            blocks:
-#                color: |
-#                    color.rgb *= vec3(min((v_world_position.z*.002 + .5),0.8));
-    buildingsLines:
-        base: lines
+        shaders:
+            blocks:
+                color: |
+                    color.rgb *= vec3(min(1. + (v_world_position.z*.002), 1.2));
     dashedline:
         base: lines
         texcoords: true
@@ -2301,7 +2299,7 @@ layers:
 #                - { $zoom: { max: 18 } }
         draw:
             #filter: { not: { location: underground } }
-            polygons:
+            buildings:
                 #order: function() { if( $zoom < 17) { return 5; } else { return 9; } }
                 order: 438
                 color: *building1
