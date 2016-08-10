@@ -11,6 +11,21 @@
 # Read more: https://github.com/tangrams/zinc-style
 #
 
+buildings-global:
+    - &extrude_function |
+        function() {
+            var meters_per_level = 4;
+            var min_height = 20;
+            var multiplier = 4;
+
+            if (feature.height) return Math.max(feature.height, min_height) * multiplier;
+
+            var levels = feature['bulding:levels'];
+            if (levels) return Math.max(levels * meters_per_level, min_height) * multiplier;
+
+            return min_height * multiplier;
+        }
+
 labels-global:
     - &text_visible_continent         false
     - &text_visible_admin             false
@@ -393,6 +408,18 @@ sources:
         #url: '//vector.dev.mapzen.com/osm/all/{z}/{x}/{y}.topojson'
         #url:  //localhost:8080/osm/all/{z}/{x}/{y}.json
         max_zoom: 16
+        scripts: ["http://texty.org.ua/d/buildings-kyiv/js/buildings_ids_hash.js"]
+        transform: |
+          function(data) {
+            data.buildings.features = data.buildings.features.filter(function(f){
+              return !__buildings_ids_hash[f.properties.id];
+            });
+            return data;
+          }
+
+    overlay:
+        type: GeoJSON
+        url: buildings.min.geojson
 
 #    # Only enable this for local debug, should not be enabled for prod (app inserts these at runtime)
 #    # These are all in San Francisco, California
@@ -438,17 +465,25 @@ sources:
 #        url: https://gist.githubusercontent.com/anonymous/88235c795bb44b8c45150bdd5561f947/raw/71d4fab97b6513833bf1a589167119e6169ef86d/map.geojson
     
 camera:
-    type: isometric
-    axis: [0, .1] # very small building extrusion
+    type: perspective
+#    axis: [0, .1] # very small building extrusion
 
-#lights:
-#    light1:
-#        type: directional
-#        direction: [1, 1, -.9]
-#        diffuse: .5
-#        ambient: .85
+lights:
+    light1:
+        type: directional
+        direction: [1, 1, -.9]
+        diffuse: .5
+        ambient: .85
 
 styles:
+    buildings:
+        base: polygons
+#        shaders:
+#            blocks:
+#                color: |
+#                    color.rgb *= vec3(min((v_world_position.z*.002 + .5),0.8));
+    buildingsLines:
+        base: lines
     dashedline:
         base: lines
         texcoords: true
@@ -2245,21 +2280,21 @@ layers:
                 - { $zoom: [13], area: { min: 100000 }, kind: true }
                 - { $zoom: [13], height: { min: 250 } }
                 - { $zoom: [13], volume: { min: 250000 } }
-                - { $zoom: [14], area: { min: 20000 }, name: true }
-                - { $zoom: [14], area: { min: 20000 }, kind: true }
+                - { $zoom: [14], area: { min: 15000 }, name: true }
+                - { $zoom: [14], area: { min: 15000 }, kind: true }
                 - { $zoom: [14], area: { min: 5000 }, landuse_kind: true }
                 - { $zoom: [14], height: { min: 150 } }
                 - { $zoom: [14], volume: { min: 150000 } }
-                - { $zoom: [15], area: { min: 5000 }, name: true }
-                - { $zoom: [15], area: { min: 5000 }, kind: true }
-                - { $zoom: [15], area: { min: 3000 }, landuse_kind: true }
+                - { $zoom: [15], area: { min: 3000 }, name: true }
+                - { $zoom: [15], area: { min: 3000 }, kind: true }
+                - { $zoom: [15], area: { min: 2000 }, landuse_kind: true }
                 - { $zoom: [15], height: { min: 100 } }
                 - { $zoom: [15], volume: { min: 100000 } }
                 - { $zoom: [16], area: { min: 1000 }, name: true }
                 - { $zoom: [16], area: { min: 1000 }, kind: true }
                 - { $zoom: [16], area: { min: 2000 }, landuse_kind: true }
                 - { $zoom: [16], volume: { min: 50000 } }
-                #- { $zoom: [16], height: { min: 50 } }
+                - { $zoom: [16], height: { min: 50 } }
                 - { $zoom: { min: 17 } }
             all:
                 - not: { location: underground }
@@ -2270,13 +2305,21 @@ layers:
                 #order: function() { if( $zoom < 17) { return 5; } else { return 9; } }
                 order: 438
                 color: *building1
-                extrude: *building_e
+                extrude: *extrude_function
+
+            outline:
+                style: lines
+                order: 437
+                color: *building2
+                width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
+                extrude: false
+
             outline:
                 style: lines
                 order: 439
                 color: *building2
                 width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
-                extrude: *building_e
+                extrude: *extrude_function
         in_park:
             #todo: does forest belong here?
             filter: { landuse_kind: [park,forest,nature_reserve,conservation,golf_course,garden] }
@@ -2334,7 +2377,39 @@ layers:
 #            draw:
 #                polygons:
 #                    color: orange
-                
+    my-buildings:
+        data: { source: overlay, layer: buildings }
+        filter:
+            abandoned_building: yes #building: "yes"
+        draw:
+            buildings:
+                order: 438
+                color: '#FFBC50'
+                extrude: *extrude_function
+                interactive: true
+            outline:
+                style: lines
+                order: 10001
+                color: *building2
+                width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
+                extrude: *extrude_function
+
+    construction:
+        data: { source: overlay, layer: buildings}
+        filter: [ abandoned_building: construction, abandoned_landuse: construction ]
+        draw:
+            buildings:
+                order: 438
+                color: '#1090ff'
+                extrude: *extrude_function
+                interactive: true
+            outline:
+                style: lines
+                order: 10001
+                color: *building2
+                width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
+                extrude: *extrude_function
+
     building-labels:
         data: { source: osm, layer: buildings }
         filter:
