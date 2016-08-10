@@ -4,11 +4,7 @@
 map = (function () {
     'use strict';
 
-//    function onTangramClick(selection) { console.log('Hover!', selection); };
-
-    // var map_start_location = [50.4696, 30.5206, 11.975]; // Kyiv last
     var map_start_location = [50.4667, 30.5243, 15.3]; // Kyiv
-
 
     /*** URL parsing ***/
 
@@ -24,15 +20,19 @@ map = (function () {
 
     /*** Map ***/
 
-    var map = L.map('map',
-        {"keyboardZoomOffset" : .05}
-    );
+    var map = L.map('map', {
+        keyboardZoomOffset : .05,
+        minZoom: 11,
+        maxZoom: 17
+    });
 
     var layer = Tangram.leafletLayer({
         scene: 'scene.yaml',
         attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
         events: {
           click: function(selection) {
+              window.selection = selection;
+
               console.log('Click!', selection);
               if (!selection.feature) return;
               var latlng = selection.leaflet_event.latlng;
@@ -78,11 +78,24 @@ map = (function () {
 
     window.addEventListener('load', function () {
         // Scene initialized
-        layer.on('init', function() {
-        });
+        layer.on('init', function() {});
         layer.addTo(map);
+
+        graphScroll()
+            .container(d3.select('#article'))
+            .graph(d3.select('#graph'))
+            .sections(d3.selectAll('#article p'))
+            .on('active', function(i) {
+                var section = d3.select('.graph-scroll-active');
+                var lon = section.attr('data-lon');
+                var lat = section.attr('data-lat');
+                if (!lon || !lat) return;
+
+                map.panTo(new L.LatLng(lat, lon));
+            });
     });
 
     return map;
 
 }());
+
