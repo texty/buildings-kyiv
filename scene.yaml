@@ -69,7 +69,7 @@ labels-global:
     - &text_visible_exits_e           false
     - &text_visible_airport_gate      false
 
-    - &road_text_order                400
+    - &road_text_order                436
 
 zinc-light-gray-colors:
     cameras:
@@ -476,6 +476,19 @@ lights:
         direction: [1, 1, -.9]
         diffuse: .5
         ambient: .85
+        attenuation: 1.5
+
+    popupLight:
+        type: point
+        origin: world
+        position: [0, 0, 100]
+        ambient: [.3, .3 ,0.]
+#        ambient: .3
+        diffuse: [0., 0., .1]
+        specular: [.2, .2, 0]
+        radius: 200
+#        direction: [1, 1, 0]
+#        exponent: 30.
 
 styles:
     buildings:

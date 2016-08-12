@@ -30,32 +30,7 @@ var map = (function () {
         scene: 'scene.yaml',
         attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
         events: {
-            click: function(selection) {
-                console.log(selection);
-                if (!selection.feature) return;
-
-                var latlng = selection.leaflet_event.latlng;
-
-                var content = "";
-
-                if (selection.feature.properties['addr:street'])
-                  content += '<b>' + selection.feature.properties['addr:street'] + '</b>';
-
-                if (selection.feature.properties['addr:housenumber'])
-                  content +=  ', <b>' + selection.feature.properties['addr:housenumber'] + '</b>' + '</br></br>';
-
-                if (selection.feature.properties.note)
-                  content += selection.feature.properties.note + '</br></br>';
-
-                if (selection.feature.properties.description)
-                  content += selection.feature.properties.description;
-
-                content = content.replace(/<\/br><\/br>$/, '');
-
-                L.popup().setLatLng(latlng)
-                .setContent(content)
-                .openOn(map);
-                } // interactivity
+            click: showPopup
         }
     });
 
@@ -79,32 +54,78 @@ var map = (function () {
             .sections(d3.selectAll('#article p'))
             .on('active', function(i) {
                 var section = d3.select('.graph-scroll-active');
-
-                // var click_coords = section.attr('data-click');
-                // if (!click_coords) return;
-                //
-                // // debugger;
-                // var pixel_coords = map.latLngToContainerPoint(click_coords.split("/"));
-                // console.log(pixel_coords);
-                // var el = document.getElementById('map');
-                // el.dispatchEvent(new MouseEvent('click', {
-                //     view: window,
-                //     bubbles: true,
-                //     cancelable: true,
-                //     screenX: pixel_coords.x,
-                //     screenY: pixel_coords.y
-                // }));
+                var duration = 1;
 
                 var coords = section.attr('data-coords');
                 if (!coords) return;
 
                 var c = coords.split("/");
+                map.setView(new L.LatLng(c[0], c[1]), 17, {animate: true, duration: duration});
 
-                map.setView(new L.LatLng(c[0], c[1]), 17, {animate: true, duration: 1});
+                var click_coords = section.attr('data-click');
+                if (!click_coords) return;
+
+                click_coords = click_coords.split("/");
+                var click_latlng = L.latLng(+click_coords[0], +click_coords[1]);
+
+                highLight(click_latlng);
+
+                // highLight(click_latlng);
+
+                //dirty brutal hack
+                // setTimeout(function() {
+                //     var pixel = map.latLngToContainerPoint(click_latlng);
+                //     console.log(pixel);
+                //     layer.scene
+                //         .getFeatureAt(pixel)
+                //         .then(function(selection) {
+                //             showPopup(selection, click_latlng);
+                //         });
+                // }, (duration + 1) * 1000);
             });
     });
 
-    return map;
+    function showPopup(selection, latlng) {
+        if (!selection.feature) return;
 
+        console.log(selection);
+
+        if (!latlng) latlng = selection.leaflet_event.latlng;
+
+        var content = constructPopupHtml(selection.feature.properties);
+
+        L.popup()
+            .setLatLng(latlng)
+            .setContent(content)
+            .openOn(map);
+
+        highLight(latlng);
+    }
+
+    function highLight(latlng) {
+        layer.scene.config.lights.popupLight.position[1] = latlng.lat;
+        layer.scene.config.lights.popupLight.position[0] = latlng.lng;
+        layer.scene.requestRedraw();
+    }
+
+    function constructPopupHtml(properties) {
+        var content = "";
+
+        if (properties['addr:street'])
+            content += '<b>' + properties['addr:street'] + '</b>';
+
+        if (properties['addr:housenumber'])
+            content +=  ', <b>' + properties['addr:housenumber'] + '</b>' + '</br></br>';
+
+        if (properties.note)
+            content += properties.note + '</br></br>';
+
+        if (properties.description)
+            content += properties.description;
+
+        return content.replace(/<\/br><\/br>$/, '');
+    }
+
+    return map;
 }());
 
