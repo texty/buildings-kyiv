@@ -19,7 +19,7 @@ body {
   width: 40%;
   padding: 18px 2%;
   left: 60%;
-  font-size: 1.1em;
+  font-size: 1em;
   /*line-height: 1.3em;*/
   margin-bottom: 1em;
   /*height: 1000px;*/
@@ -54,6 +54,10 @@ body {
   background-color: rgba(0,0,0,0.6);
 }
 
+h1 {
+  font-weight: 800;
+}
+
 h3 {
   font-size: 1.3em;
 }
@@ -62,6 +66,17 @@ h3 span {
   padding: 3px 0;
   line-height: 1.6;
   background: rgba(247, 122, 82, 0.5);
+  font-size: 15px;
+  font-style: italic;
+}
+
+h3.header {
+  margin-bottom: 40px;
+  margin-top: 0;
+}
+
+h3 {
+  margin-top: 40px;
 }
 
 .legend {
@@ -89,11 +104,11 @@ h3 span {
 }
 
 .old {
-  background: red;
+  background: #FFBC50;
 }
 
 .new {
-  background: blue;
+  background: #1090ff;
 }
 
 .leaflet-pelias-control.leaflet-bar.leaflet-control.leaflet-pelias-expanded {
@@ -194,6 +209,15 @@ h3 span {
 
 #article p.graph-scroll-active a {
   background: rgba(247, 122, 82, 0.5) none repeat scroll 0 0;
-  transition: background ease-in .3s;
+  transition: background ease-in 1s;
 }
 
+#article p.graph-scroll-active.my-buildings a {
+  background: rgba(255, 188, 80, 0.8) none repeat scroll 0 0;
+  transition: background ease-in 1s;
+}
+
+#article p.graph-scroll-active.construction a {
+  background: rgba(16, 144, 255, 0.5) none repeat scroll 0 0;
+  transition: background ease-in 1s;
+}
