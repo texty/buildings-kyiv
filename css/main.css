@@ -101,7 +101,6 @@ h3 span {
 }
 
 .leaflet-left {
-  left: inherit;
   left: 0;
   margin-right: 10px;
   margin-top: 40px;
@@ -184,5 +183,17 @@ h3 span {
 
 #article p.graph-scroll-active{
   opacity: 1;
+}
+
+#article p a {
+  background: rgba(247, 122, 82, 0.0) none repeat scroll 0 0;
+  transition: background ease-in 4s;
+
+  text-decoration: underline dotted;
+}
+
+#article p.graph-scroll-active a {
+  background: rgba(247, 122, 82, 0.5) none repeat scroll 0 0;
+  transition: background ease-in .3s;
 }
 

@@ -45,45 +45,47 @@ var map = (function () {
 
     window.addEventListener('load', function () {
         // Scene initialized
-        layer.on('init', function() {});
+        // layer.on('init', function() {});
+        layer.scene.subscribe({
+            load: function (e) {
+                // console.log('scene loaded:', e);
+                graphScroll()
+                    .container(d3.select('#article'))
+                    .graph(d3.select('#graph'))
+                    .sections(d3.selectAll('#article p.section'))
+                    .on('active', function(i) {
+                        var section = d3.select('.graph-scroll-active');
+
+                        var data_coords = section.attr('data-coords');
+                        if (!data_coords) return;
+
+                        var c = data_coords.split("/");
+                        onArticleSelection(c);
+                    });
+            }
+        });
+
         layer.addTo(map);
-
-        graphScroll()
-            .container(d3.select('#article'))
-            .graph(d3.select('#graph'))
-            .sections(d3.selectAll('#article p'))
-            .on('active', function(i) {
-                var section = d3.select('.graph-scroll-active');
-                var duration = 1;
-
-                var coords = section.attr('data-coords');
-                if (!coords) return;
-
-                var c = coords.split("/");
-                map.setView(new L.LatLng(c[0], c[1]), 17, {animate: true, duration: duration});
-
-                var click_coords = section.attr('data-click');
-                if (!click_coords) return;
-
-                click_coords = click_coords.split("/");
-                var click_latlng = L.latLng(+click_coords[0], +click_coords[1]);
-
-                highLight(click_latlng);
-
-                // highLight(click_latlng);
-
-                //dirty brutal hack
-                // setTimeout(function() {
-                //     var pixel = map.latLngToContainerPoint(click_latlng);
-                //     console.log(pixel);
-                //     layer.scene
-                //         .getFeatureAt(pixel)
-                //         .then(function(selection) {
-                //             showPopup(selection, click_latlng);
-                //         });
-                // }, (duration + 1) * 1000);
-            });
     });
+    
+    function onArticleSelection(c) {
+        var duration = 1; //animation duration, seconds
+
+        map.setView(new L.LatLng(c[0], c[1]), 17, {animate: true, duration: duration});
+        var click_latlng = L.latLng(+c[0], +c[1]);
+        highLight(click_latlng);
+
+        // dirty brutal hack
+        // pan to building, wait an simulate click on it
+        setTimeout(function() {
+            var pixel = map.latLngToContainerPoint(click_latlng);
+            layer.scene
+                .getFeatureAt(pixel)
+                .then(function(selection) {
+                    showPopup(selection, click_latlng);
+                });
+        }, (duration + .7) * 1000);
+    }
 
     function showPopup(selection, latlng) {
         if (!selection.feature) return;
@@ -100,12 +102,21 @@ var map = (function () {
             .openOn(map);
 
         highLight(latlng);
+        // animate_building(selection.feature)
     }
 
     function highLight(latlng) {
         layer.scene.config.lights.popupLight.position[1] = latlng.lat;
         layer.scene.config.lights.popupLight.position[0] = latlng.lng;
         layer.scene.requestRedraw();
+    }
+
+    function animate_building(feature) {
+        var id = feature.properties['@id'];
+        var layer_name = feature.layers[0];
+
+        layer.scene.config.layers[layer_name].selected.filter = "function() {return feature['@id'] == '" + id +"'}";
+        layer.scene.rebuild();
     }
 
     function constructPopupHtml(properties) {
