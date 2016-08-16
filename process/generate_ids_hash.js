@@ -12,7 +12,7 @@ var out_file = args[1];
 
 var json = JSON.parse(fs.readFileSync(in_file));
 
-var ids = json.buildings.features
+var ids = json.features
     .map(function(feature){ return feature.id.split('/')[1]})
     .reduce(function(o,v,i){ o[v]=1; return o }, {})
     ;
