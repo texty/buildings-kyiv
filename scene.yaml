@@ -482,13 +482,15 @@ lights:
         type: point
         origin: world
         position: [0, 0, 100]
-        ambient: [.3, 0 ,0.]
-#        ambient: .3
-        diffuse: [0., 0., .1]
-        specular: [.2, .0, 0]
+        ambient: [.2, .2, .0]
+#        ambient: [.6, .3 ,.09]
+        diffuse: [.1, .1, .0]
+#        diffuse: [.6, .3, .09]
+        specular: [.06, .06, .0]
+#        specular: [.06, .03, .009]
         radius: 200
 #        direction: [1, 1, 0]
-#        exponent: 30.
+        exponent: 30.
 
 styles:
     buildings:
