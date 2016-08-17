@@ -5,7 +5,7 @@ html {
 
 body {
     font-family: 'Open Sans', sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     color: #383e47;
     background: #fff;
     width: 100%;
@@ -153,12 +153,22 @@ header {
 
 /* ======== Media Query ======== */
 
+@media only screen and (max-width: 1400px)  and (orientation: landscape) {
+.wraper { margin-right: 5%; margin-left: 5%;}
+.copyright { font-size: 0.6em; }
+.links li { color:#fff; font-size: 0.6em; }
+.copying-info { font-size: 0.6em;}
+.dj_header {font-size: 1.5em;}
+body {font-size: 15px;}
+}
+
 @media only screen and (max-width: 1024px)  and (orientation: landscape) {
 .wraper { margin-right: 5%; margin-left: 5%;}
 .copyright { font-size: 0.6em; }
 .links li { color:#fff; font-size: 0.6em; }
 .copying-info { font-size: 0.6em;}
 .dj_header {font-size: 1.5em;}
+body {font-size: 15px;}
 }
 
 
@@ -168,6 +178,7 @@ header {
 .links li { color:#fff; font-size: 0.6em; }
 .copying-info {font-size: 0.6em;}
 .dj_header {font-size: 1.5em;}
+body { font-size: 15px;}
 }
 
 @media only screen and (max-width: 601px) {
@@ -178,4 +189,5 @@ header {
 .links li {display:none;}
 .logo {margin-top: 15px;}
 .p2 {display: none;}
+body {font-size: 12px;}
 }
