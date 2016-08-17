@@ -66,6 +66,20 @@ var map = (function () {
         });
 
         layer.addTo(map);
+
+        d3.selectAll('#article p.section a')
+            .on("click", function(){
+                var data_coords = d3.select(this.parentNode).attr('data-coords');
+                if (!data_coords) return;
+
+                var c = data_coords.split("/");
+                onArticleSelection(c);
+            });
+
+        var hammer = new Hammer(document.getElementById('article'));
+        hammer.on('swiperight', function(){
+            collapser.toggle();
+        })
     });
     
     function onArticleSelection(c) {
@@ -88,7 +102,7 @@ var map = (function () {
     }
 
     function showPopup(selection, latlng) {
-        if (!selection.feature) return;
+        if (!selection || !selection.feature) return;
 
         console.log(selection);
 
