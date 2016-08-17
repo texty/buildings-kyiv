@@ -2470,51 +2470,69 @@ layers:
 #            draw:
 #                polygons:
 #                    color: orange
-    my-buildings:
-        data: { source: overlay }
-        filter: function() {return feature['abandoned:building'] == 'yes'}
-        draw:
-            buildings:
-                order: 438
-                color: '#FFBC50'
-                extrude: *extrude_function
-                interactive: true
-            outline:
-                style: lines
-                order: 10001
-                color: *building2
-                width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
-                extrude: *extrude_function
-        selected:
-            filter: function() {return false}
-            draw:
-                buildings-animated-y:
-                    order: 439
-                    extrude: *extrude_function
-                    interactive: true
 
-    construction:
-        data: { source: overlay}
-        filter: function() {return feature['abandoned:building'] == 'construction' || feature['abandoned:landuse'] == 'construction'}
-        draw:
-            buildings:
-                order: 438
-                color: '#1090ff'
-                extrude: *extrude_function
-                interactive: true
-            outline:
-                style: lines
-                order: 10001
-                color: *building2
-                width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
-                extrude: *extrude_function
-        selected:
-            filter: function() {return false}
+    own_buildings:
+        data: { source: overlay }
+
+        my-buildings:
+            filter: function() {return feature['abandoned:building'] == 'yes'}
             draw:
-                buildings-animated-b:
-                    order: 439
+                buildings:
+                    order: 438
+                    color: '#FFBC50'
                     extrude: *extrude_function
                     interactive: true
+                outline:
+                    style: lines
+                    order: 10001
+                    color: *building2
+                    width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
+                    extrude: *extrude_function
+            selected:
+                filter: function() {return false}
+                draw:
+                    buildings-animated-y:
+                        order: 439
+                        extrude: *extrude_function
+                        interactive: true
+
+        construction:
+            filter: function() {return feature['abandoned:building'] == 'construction' || feature['abandoned:landuse'] == 'construction'}
+            draw:
+                buildings:
+                    order: 438
+                    color: '#1090ff'
+                    extrude: *extrude_function
+                    interactive: true
+                outline:
+                    style: lines
+                    order: 10001
+                    color: *building2
+                    width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
+                    extrude: *extrude_function
+            selected:
+                filter: function() {return false}
+                draw:
+                    buildings-animated-b:
+                        order: 439
+                        extrude: *extrude_function
+                        interactive: true
+
+        other:
+            filter: function() {return feature['@id'] == 'way/52812820' || feature['@id']=='way/432161564'}
+            draw:
+                buildings:
+                    order: 438
+                    color: '#F77A52'
+                    extrude: *extrude_function
+                    interactive: true
+                outline:
+                    style: lines
+                    order: 10001
+                    color: *building2
+                    width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.4m]]
+                    extrude: *extrude_function
+
 
     building-labels:
         data: { source: osm, layer: buildings }

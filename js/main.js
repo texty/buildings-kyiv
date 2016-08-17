@@ -136,6 +136,9 @@ var map = (function () {
     function constructPopupHtml(properties) {
         var content = "";
 
+        if (properties.caption)
+            content += '<b>' + properties.caption + '<b/>';
+
         if (properties['addr:street'])
             content += '<b>' + properties['addr:street'] + '</b>';
 
