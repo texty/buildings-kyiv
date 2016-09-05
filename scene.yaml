@@ -2481,7 +2481,7 @@ layers:
             draw:
                 buildings:
                     order: 438
-                    color: '#FFBC50'
+                    color: 'crimson'
                     extrude: *extrude_function
                     interactive: true
                 outline:
