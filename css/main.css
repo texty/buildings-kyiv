@@ -117,7 +117,7 @@ h3 {
 }
 
 .old {
-  background: #FFBC50;
+  background: crimson;
 }
 
 .new {
@@ -225,7 +225,7 @@ h3 {
 }
 
 #article p.graph-scroll-active.my-buildings a {
-  background: rgba(255, 188, 80, 0.5) none repeat scroll 0 0;
+  background: rgba(220, 20, 60, 0.5) none repeat scroll 0 0;
   transition: background ease-in 1s;
 }
 
