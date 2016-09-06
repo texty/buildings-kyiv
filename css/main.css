@@ -53,7 +53,7 @@ body {
 
 #social._collapsed {
   left: 100%;
-  margin-left: -110px;
+  margin-left: -7em;
   /*height: 100px;*/
 }
 
