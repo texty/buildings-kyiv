@@ -137,7 +137,7 @@ var map = (function () {
         var content = "";
 
         if (properties.caption)
-            content += '<b>' + properties.caption + '<b/>';
+            content += '<b>' + properties.caption + '</b></br></br>';
 
         if (properties['addr:street'])
             content += '<b>' + properties['addr:street'] + '</b>';
