@@ -63,12 +63,7 @@ body {
   cursor: pointer;
   padding-left: 3px;
   padding-top: 10px;
-  /*font-size: 2em;*/
-  /*background: rgba(0,0,0,0.6);*/
-  /*width: 1.7em;*/
-  /*height: 1.7em;*/
   right: 0.5em;
-  /*top: 16px;*/
   z-index: 9999;
 }
 
@@ -80,7 +75,6 @@ body {
   display: inline-block;
   text-align: center;
   width: 1.28571em;
-  /*font-size: 1.33333em;*/
   line-height: 0.75em;
   vertical-align: -15%;
 }
@@ -92,12 +86,6 @@ body {
 #collapser._collapsed #cross-btn {
   display: none;
 }
-
-
-/*#collapser._collapsed {*/
-  /*left: -4em;*/
-  /*background-color: rgba(0,0,0,0.6);*/
-/*}*/
 
 .art-img {
   width: 100%;
@@ -189,10 +177,6 @@ h3 {
     z-index: 1000;
 }
 
-
-/*.social-icons {*/
-/*}*/
-
 .social-tw,
 .social-fb,
 #read-btn,
@@ -231,10 +215,6 @@ h3 {
   #social._collapsed {
     margin-left: -112px;
   }
-
-  /*#social._collapsed {*/
-    /*margin-left: -85px;*/
-  /*}*/
 
   #article._collapsed {
     left: 0;
