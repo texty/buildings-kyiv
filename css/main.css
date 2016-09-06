@@ -43,6 +43,11 @@ body {
   /*height: 100px;*/
 }
 
+#social._collapsed {
+  left: 100%;
+  /*height: 100px;*/
+}
+
 #collapser {
   position: fixed;
   display: block;
@@ -154,11 +159,11 @@ h3 {
 }
 
 #social {
-  position: absolute;
+  position: fixed;
   padding-top: 0;
-  z-index: 1000;
-  left: -6em;
-  margin-top: -16px;
+  z-index: 9999;
+  left: 60%;
+  margin-left: -85px;
 }
 
 /*.social-icons {*/
@@ -191,11 +196,12 @@ h3 {
     background-color: rgba(0,0,0,0.8);
   }
 
-  #article._collapse {
+  #article._collapse,
+  #social._collapse {
     left: 100%;
   }
 
-  #article._collapsed {
+  #article._collapsed{
     left: 0;
   }
 }
