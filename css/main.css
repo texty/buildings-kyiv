@@ -55,6 +55,7 @@ body {
   height: 2em;
   right: 0.5em;
   bottom: 0.5em;
+  z-index: 9999;
 }
 
 /*#collapser._collapsed {*/
@@ -152,12 +153,16 @@ h3 {
     z-index: 1000;
 }
 
-.social-icons {
-  position: fixed;
+#social {
+  position: absolute;
   padding-top: 0;
   z-index: 1000;
-  transform: translate(-132px, -8px);
+  left: -6em;
+  margin-top: -16px;
 }
+
+/*.social-icons {*/
+/*}*/
 
 .social-tw,
 .social-fb {
