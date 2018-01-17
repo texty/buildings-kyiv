@@ -405,11 +405,11 @@ textures:
 
 sources:
     osm:
-        type: TopoJSON #GeoJSON, MVT, TopoJSON
-        url: //tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key=mapzen-gKLCbSM
+        type: MVT
+        #url: //tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.mvt?api_key=mapzen-gKLCbSM
         #url: //vector.mapzen.com/osm/all/{z}/{x}/{y}.topojson?api_key=vector-tiles-HqUVidw
         #url: '//vector.dev.mapzen.com/osm/all/{z}/{x}/{y}.topojson'
-        #url:  //localhost:8080/osm/all/{z}/{x}/{y}.json
+        url:  'http://texty.org.ua/maps/d/buildings-kyiv/{z}/{x}/{y}.mvt'
         max_zoom: 16
         scripts: ["https://oksymets.github.io/buildings-kyiv/js/buildings_ids_hash.js"]
         transform: |
@@ -468,8 +468,9 @@ sources:
 #        url: https://gist.githubusercontent.com/anonymous/88235c795bb44b8c45150bdd5561f947/raw/71d4fab97b6513833bf1a589167119e6169ef86d/map.geojson
 
 camera:
-    type: perspective
-    vanishing_point: [0, -500]
+    type: isometric
+    axis: [-0.5,0.5]
+	#vanishing_point: [0, -500]
 
 lights:
     light1:
