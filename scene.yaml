@@ -409,9 +409,9 @@ sources:
         #url: //tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.mvt?api_key=mapzen-gKLCbSM
         #url: //vector.mapzen.com/osm/all/{z}/{x}/{y}.topojson?api_key=vector-tiles-HqUVidw
         #url: '//vector.dev.mapzen.com/osm/all/{z}/{x}/{y}.topojson'
-        url:  'http://texty.org.ua/maps/d/buildings-kyiv/{z}/{x}/{y}.mvt'
+        url:  'https://texty.org.ua/maps/d/buildings-kyiv/{z}/{x}/{y}.mvt'
         max_zoom: 16
-        scripts: ["https://oksymets.github.io/buildings-kyiv/js/buildings_ids_hash.js"]
+        scripts: ["https://texty.github.io/buildings-kyiv/js/buildings_ids_hash.js"]
         transform: |
           function(data) {
             data.buildings.features = data.buildings.features.filter(function(f){
